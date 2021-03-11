@@ -5,24 +5,23 @@
       <label>Name: </label> {{this.ticket.name}}
     </div>
     <div>
-      <label>Price: </label> {{this.ticket.price}}
+      <label>Price: </label> {{this.ticket.items.reduce((acc, item) => acc + item.price, 0)}}
     </div>
     <div>
-      <label>Items: </label> {{this.ticket.items}}
+      <label>Items: </label>
+      <li v-for="(item, index) in this.ticket.items" :key="index">
+
+          {{item.name}} : {{item.price}}
+
+      </li>
+
     </div>
 
-    <span v-if="this.customer.active"
-      v-on:click="updateActive(false)"
-      class="button is-small btn-primary">Inactive</span>
-    <span v-else
-      v-on:click="updateActive(true)"
-      class="button is-small btn-primary">Active</span>
-
-    <span class="button is-small btn-danger" v-on:click="deleteCustomer()">Delete</span>
+    <span class="button is-small btn-danger" v-on:click="deleteTicket()">Delete</span>
   </div>
   <div v-else>
     <br/>
-    <p>Please click on a Customer...</p>
+    <p>Please click on a Ticket...</p>
   </div>
 </template>
 
@@ -34,27 +33,9 @@ export default {
   props: ["ticket"],
   methods: {
     /* eslint-disable no-console */
-    updateActive(status) {
-      var data = {
-        id: this.ticket._id,
-        name: this.ticket.name,
-        items: this.ticket.items,
-        active: status
-      };
-
+    deleteTicket() {
       http
-        .put("/ticket/" + this.ticket._id, data)
-        .then(response => {
-          this.ticket.active = response.data.active;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-    deleteCustomer() {
-      http
-        .delete("/ticket/" + this.customer._id)
+        .delete("/ticket/" + this.ticket._id)
         .then(response => {
           console.log(response.data);
           this.$emit("refreshData");

@@ -4,12 +4,10 @@ const Customer = require('../models/ticket.model.js');
 // POST a Customer
 exports.create = (req, res) => {
     // Create a Customer
-    console.log(req.body)
     const customer = new Customer({
         name: req.body[0],
         items: req.body.slice(1,req.body.length)
     })
-    console.log(customer)
     // Save a Customer in the MongoDB
     customer.save()
     .then(data => {
@@ -98,22 +96,22 @@ exports.update = (req, res) => {
 
 // DELETE a Customer
 exports.delete = (req, res) => {
-    Customer.findByIdAndRemove(req.params.customerId)
+    Customer.findByIdAndRemove(req.params.ticketId)
     .then(customer => {
         if(!customer) {
             return res.status(404).send({
-                message: "Customer not found with id " + req.params.customerId
+                message: "Customer not found with id " + req.params.ticketId
             });
         }
         res.send({message: "Customer deleted successfully!"});
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                message: "Customer not found with id " + req.params.customerId
+                message: "Customer not found with id " + req.params.ticketId
             });
         }
         return res.status(500).send({
-            message: "Could not delete customer with id " + req.params.customerId
+            message: "Could not delete customer with id " + req.params.ticketId
         });
     });
 };

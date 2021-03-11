@@ -17,7 +17,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url, { useNewUrlParser: true })
+mongoose.connect(dbConfig.url, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true, useUnifiedTopology: true })
 .then(() => {
     console.log("Successfully connected to MongoDB.");
 }).catch(err => {

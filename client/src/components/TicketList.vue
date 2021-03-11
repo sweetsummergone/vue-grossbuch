@@ -8,7 +8,7 @@
                             name: 'ticket-details',
                             params: { ticket: ticket, id: ticket._id }
                         }">
-                            {{ticket.name}}
+                            {{ticket.name}} ({{ticket.items.reduce((acc, item) => acc + item.price, 0)}})
                     </router-link>
                 </li>
             </ul>
